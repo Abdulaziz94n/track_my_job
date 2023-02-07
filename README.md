@@ -42,15 +42,15 @@ to generate an annual excel report with all details.
 
 ## How to run
 in order to start using the application you should follow these steps:
-1- clone or download the source code.
-2- open the source code with your id and run pub.get
-3- the app supports remote and fake data repositories so
-   a- if you want to run the app with remote data you should add your own MongoDb connection String, Username and Password to the MongoDbApi file
+* 1- clone or download the source code.
+* 2- open the source code with your id and run pub.get
+* 3- the app supports remote and fake data repositories so:
+  * A- if you want to run the app with remote data you should add your own MongoDb connection String, Username and Password to the MongoDbApi file
       and make sure to inject RemoteDataRepositories in the app_bindings.dart file
-   b- if you want to run the app with fake data you should inject FakeDataRepositories in the app.bindings.dart file
+  * B- if you want to run the app with fake data you should inject FakeDataRepositories in the app.bindings.dart file,
       the data are saved in the dummy_data.dart file inside the constants folder
 
-after applying the above steps you should be ready to go.
+* after applying the above steps you should be ready to go.
 
 
 ### Contact Me
