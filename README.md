@@ -52,6 +52,8 @@ in order to start using the application you should follow these steps:
 
 * after applying the above steps you should be ready to go.
 
+### Install
+You can download and try the app demo on android from the [App Link](https://play.google.com/store/apps/details?id=com.devnejim.trackmyjob) on Play Store 
 
 ### Contact Me
 - LinkedIn: [Abdulaziz Aboujib](https://www.linkedin.com/in/abdul-aziz-aboujib-5a34461b2/)
