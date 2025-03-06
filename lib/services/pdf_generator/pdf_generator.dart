@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:open_filex/open_filex.dart';
+// import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -13,9 +13,9 @@ import '../../../core/enums/ref_payment_by.dart';
 import '../../../core/extensions/date_time_extension.dart';
 import '../../../core/extensions/string_extension.dart';
 import '../../../core/extensions/transactions_list_extension.dart';
+import '../../../core/utils/utils.dart';
 import '../../core/constants/assets.dart';
 import '../../models/transaction.dart';
-import '../../../core/utils/utils.dart';
 
 part 'agency_reports.dart';
 part 'noter_reports.dart';
@@ -99,7 +99,7 @@ class PdfGenerator {
       final dir = await getTemporaryDirectory();
       final file = File('${dir.path}/$fileName.pdf');
       final generatedPDF = await file.writeAsBytes(doc);
-      await OpenFilex.open(generatedPDF.path);
+      // await OpenFilex.open(generatedPDF.path);
     } catch (e) {
       Utils.showGetxErrorSnackBar();
     }

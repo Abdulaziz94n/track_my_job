@@ -45,11 +45,11 @@ class ConnectivityController extends GetxService {
     }
   }
 
-  _listenToConnection(ConnectivityResult result) {
+  _listenToConnection(List<ConnectivityResult> result) {
     final hasConnection = result != ConnectivityResult.none;
     final color = hasConnection ? AppColors.green : AppColors.secondary;
     final message = hasConnection
-        ? '${translations.connectionStatus.tr.capitalizeFirst} ${result.name.capitalizeFirst}'
+        ? '${translations.connectionStatus.tr.capitalizeFirst} ${result.first.name.capitalizeFirst}'
         : translations.noConnection.tr.capitalizeFirst;
     Utils.showConnectionBanner(message: message, backgroundColor: color);
   }

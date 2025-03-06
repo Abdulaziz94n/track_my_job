@@ -68,6 +68,7 @@ class CustomTheme {
   static const int _appAccentGrey = 0xFF92A6F5;
 
   static final lightTheme = ThemeData.from(
+    useMaterial3: false,
     colorScheme: ColorScheme(
         brightness: Brightness.light,
         primary: AppColors.onPrimary,
@@ -79,8 +80,6 @@ class CustomTheme {
         tertiary: Colors.yellow,
         error: Colors.red,
         onError: Colors.white,
-        background: Colors.white70,
-        onBackground: Colors.white70,
         surface: AppColors.onPrimary,
         onSurface: Colors.white),
     textTheme: TextTheme(
@@ -104,6 +103,7 @@ class CustomTheme {
           BottomAppBarTheme(color: CustomTheme.appPrimaryGrey2.shade300));
 
   static final darkTheme = ThemeData.from(
+    useMaterial3: false,
     colorScheme: ColorScheme(
         brightness: Brightness.dark,
         primary: AppColors.onPrimary,
@@ -115,9 +115,8 @@ class CustomTheme {
         tertiary: Colors.yellow,
         error: Colors.red,
         onError: Colors.white,
-        background: AppColors.primary,
-        onBackground: Colors.white70,
-        surface: AppColors.onPrimary,
+        // surface: AppColors.onPrimary,
+        surface: AppColors.primary,
         onSurface: Colors.white),
     textTheme: TextTheme(
       bodySmall: GoogleFonts.dmSans(fontSize: 11),

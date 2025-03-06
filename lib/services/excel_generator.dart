@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
-import 'package:intl/intl.dart';
-import 'package:open_filex/open_filex.dart';
+// import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:track_my_job/models/extra_service.dart';
 import 'package:track_my_job/models/noter_details.dart';
@@ -46,19 +45,20 @@ class ExcelReportGenerator implements ExcelGenerator {
       'Reference Note',
       'Extra Services'
     ];
-    excel.appendRow(fileName, headers);
+    final cells = headers.map((e) => TextCellValue(e)).toList();
+    excel.appendRow(fileName, cells);
     for (var transaction in excelData) {
       excel.appendRow(fileName, mapTransactionToRow(transaction));
     }
     final generatedFile = await saveExcel(excel, fileName);
-    await OpenFilex.open(generatedFile.path);
+    // await OpenFilex.open(generatedFile.path);
   }
 
-  List<String> mapTransactionToRow(Transaction transaction) {
+  List<CellValue> mapTransactionToRow(Transaction transaction) {
     final noterDetails = transaction.noterDetails;
     final refDetails = transaction.referenceDetails;
     final extraServices = transaction.extraServices;
-    final row = <String>[];
+    final row = <CellValue>[];
 
     mapTransactionData(transaction, row);
     mapNoterData(noterDetails, row);
@@ -67,58 +67,72 @@ class ExcelReportGenerator implements ExcelGenerator {
     return row;
   }
 
-  mapTransactionData(Transaction transaction, List<String> row) {
-    row.add(DateFormat('dd/MM/yyyy').format(transaction.dateTime));
-    row.add(transaction.customerType.name.capitalizeFirstOfEach);
-    row.add(transaction.customer!.capitalizeFirstOfEach);
-    row.add(transaction.transactionType.name.capitalizeFirstOfEach);
-    row.add(transaction.amount.toString().capitalizeFirstOfEach +
+  mapTransactionData(Transaction transaction, List<CellValue> row) {
+    final date = transaction.dateTime;
+    row.add(DateTimeCellValue(
+        year: date.year,
+        month: date.month,
+        day: date.day,
+        hour: date.hour,
+        minute: date.minute));
+    row.add(TextCellValue(transaction.customerType.name.capitalizeFirstOfEach));
+    row.add(TextCellValue(transaction.customer!.capitalizeFirstOfEach));
+    row.add(
+        TextCellValue(transaction.transactionType.name.capitalizeFirstOfEach));
+    row.add(TextCellValue(transaction.amount.toString().capitalizeFirstOfEach +
         ' ' +
-        transaction.currency.name.capitalizeFirstOfEach);
-    row.add(transaction.netProfit.toString().capitalizeFirstOfEach);
-    row.add(transaction.paymentStatus.description.capitalizeFirstOfEach);
-    row.add(transaction.note?.capitalizeFirstOfEach ??
-        'No Notes'.capitalizeFirstOfEach);
+        transaction.currency.name.capitalizeFirstOfEach));
+    row.add(
+        TextCellValue(transaction.netProfit.toString().capitalizeFirstOfEach));
+    row.add(TextCellValue(
+        transaction.paymentStatus.description.capitalizeFirstOfEach));
+    row.add(TextCellValue(transaction.note?.capitalizeFirstOfEach ??
+        'No Notes'.capitalizeFirstOfEach));
   }
 
-  mapNoterData(NoterDetails? noterDetails, List<String> row) {
+  mapNoterData(NoterDetails? noterDetails, List<CellValue> row) {
     if (noterDetails != null) {
-      row.add('Included'.capitalizeFirstOfEach);
-      row.add(noterDetails.id.toString().capitalizeFirstOfEach);
-      row.add(noterDetails.noterFee.toString().capitalizeFirstOfEach);
-      row.add(noterDetails.noterProfit.toString().capitalizeFirstOfEach);
-      row.add(
-          noterDetails.noterPayment!.payment.toString().capitalizeFirstOfEach);
+      row.add(TextCellValue('Included'.capitalizeFirstOfEach));
+      row.add(TextCellValue(noterDetails.id.toString().capitalizeFirstOfEach));
+      row.add(TextCellValue(
+          noterDetails.noterFee.toString().capitalizeFirstOfEach));
+      row.add(TextCellValue(
+          noterDetails.noterProfit.toString().capitalizeFirstOfEach));
+      row.add(TextCellValue(
+          noterDetails.noterPayment!.payment.toString().capitalizeFirstOfEach));
     } else {
-      row.add('');
-      row.add(0.toString());
-      row.add(0.toString());
-      row.add(0.toString());
-      row.add('No Payment'.capitalizeFirstOfEach);
+      row.add(TextCellValue(''));
+      row.add(TextCellValue(0.toString()));
+      row.add(TextCellValue(0.toString()));
+      row.add(TextCellValue(0.toString()));
+      row.add(TextCellValue('No Payment'.capitalizeFirstOfEach));
     }
   }
 
-  mapRefData(ReferenceDetails? refDetails, List<String> row) {
+  mapRefData(ReferenceDetails? refDetails, List<CellValue> row) {
     if (refDetails != null) {
-      row.add(refDetails.reference!.name.capitalizeFirstOfEach);
-      row.add(refDetails.paymentBy.toString().capitalizeFirstOfEach);
-      row.add(refDetails.referencePortion.toString().capitalizeFirstOfEach);
-      row.add(refDetails.toRefPayment!.description.capitalizeFirstOfEach);
-      row.add(refDetails.note.toString().capitalizeFirstOfEach);
+      row.add(TextCellValue(refDetails.reference!.name.capitalizeFirstOfEach));
+      row.add(
+          TextCellValue(refDetails.paymentBy.toString().capitalizeFirstOfEach));
+      row.add(TextCellValue(
+          refDetails.referencePortion.toString().capitalizeFirstOfEach));
+      row.add(TextCellValue(
+          refDetails.toRefPayment!.description.capitalizeFirstOfEach));
+      row.add(TextCellValue(refDetails.note.toString().capitalizeFirstOfEach));
     } else {
-      row.add('');
-      row.add('');
-      row.add('');
-      row.add('');
-      row.add('');
+      row.add(TextCellValue(''));
+      row.add(TextCellValue(''));
+      row.add(TextCellValue(''));
+      row.add(TextCellValue(''));
+      row.add(TextCellValue(''));
     }
   }
 
-  mapExtraServicesData(List<ExtraService>? extraServices, List<String> row) {
+  mapExtraServicesData(List<ExtraService>? extraServices, List<CellValue> row) {
     if (extraServices != null) {
-      row.add(extraServices.length.toString());
+      row.add(TextCellValue(extraServices.length.toString()));
     } else {
-      row.add('No Extra Services');
+      row.add(TextCellValue('No Extra Services'));
     }
   }
 
